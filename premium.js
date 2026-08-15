@@ -610,7 +610,9 @@ if (typeof document !== "undefined") {
         '</div>'
       ).join("");
       $$("#checkoutSummaryItems img").forEach(setImageFallback);
-      $("#checkoutSubtotal").textContent = money(result.total);
+      $("#checkoutSubtotal").textContent = money(result.subtotal);
+      $("#checkoutDiscount").textContent = "− " + money(result.discount);
+      $("#checkoutDiscountRow").classList.toggle("hidden", result.discount === 0);
       $("#checkoutDelivery").textContent = ORDER_CONFIG.deliveryFee === null
         ? "ayrıca"
         : money(ORDER_CONFIG.deliveryFee);
@@ -630,7 +632,9 @@ if (typeof document !== "undefined") {
         '<div class="review-item"><span>' + item.brand + " " + item.name + " — " +
           item.country + ", " + item.size + " ml × " + item.qty + '</span><b>' +
           money(item.lineTotal) + '</b></div>'
-      ).join("") + '<div class="review-item"><span>Ümumi məbləğ</span><b>' +
+      ).join("") + (result.discount
+        ? '<div class="review-item"><span>Promokod endirimi</span><b>− ' + money(result.discount) + '</b></div>'
+        : "") + '<div class="review-item"><span>Ümumi məbləğ</span><b>' +
         money(result.total) + '</b></div>';
     }
 
